@@ -81,7 +81,7 @@
   const screenHistory = [];
 
   function updateBackButton() {
-    backButton.classList.toggle("is-hidden", screenHistory.length === 0);
+    backButton.classList.toggle("is-hidden", currentScreen === "intro" || screenHistory.length === 0);
   }
 
   function showScreen(name, options = {}) {
@@ -242,7 +242,7 @@
     return {
       valid: true,
       type: "approved",
-      reaction: "Good choice.",
+      reaction: "",
     };
   }
 
@@ -250,6 +250,9 @@
     const day = days[state.dayKey];
     dayLabel.textContent = `${day.element}: ${day.label} in Madrid time`;
     timeGrid.innerHTML = "";
+    state.hour = null;
+    state.valid = false;
+    state.reaction = "";
     reactionCard.className = "reaction-card";
     judgingCaption.classList.remove("is-hidden");
     judgingMedia.classList.remove("is-hidden");
@@ -368,6 +371,9 @@
   document.addEventListener("click", (event) => {
     const goButton = event.target.closest("[data-go]");
     if (goButton) {
+      if (goButton.dataset.go === "time" && state.dayKey) {
+        renderTimes();
+      }
       showScreen(goButton.dataset.go);
       return;
     }
@@ -413,6 +419,9 @@
   backButton.addEventListener("click", () => {
     const previousScreen = screenHistory.pop();
     if (!previousScreen) return;
+    if (previousScreen === "time" && state.dayKey) {
+      renderTimes();
+    }
     showScreen(previousScreen, { record: false });
   });
 
