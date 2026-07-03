@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Avatar Season 2 Quest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="stage intro-stage" data-screen="intro">
+        <div class="intro-video-wrap">
+          <video
+            id="introVideo"
+            class="intro-video"
+            src="YTDown_Shorts_Will-you-come-to-my-cottage-this-summer-_Media_RDkyXpOAaDg_001_1080p.mp4"
+            autoplay
+            playsinline
+            preload="metadata"
+          ></video>
+          <button class="intro-play is-hidden" id="introPlayButton" type="button">Play</button>
+        </div>
+
+        <div class="hero-copy intro-copy">
+          <h1 id="typedQuestion" aria-live="polite"></h1>
+          <div class="choice-row intro-choices is-hidden" id="introChoices">
+            <button class="choice-button yes" data-choice="yes">Yes</button>
+            <button class="choice-button no" data-choice="no">No</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage is-hidden" data-screen="ask">
+        <div class="question-panel">
+          <h2>My Favorite Guapo, will you watch Avatar season 2 with me this weekend?</h2>
+          <div class="choice-row">
+            <button class="choice-button yes" data-choice="yes">Yes</button>
+            <button class="choice-button no" data-choice="no">No</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage is-hidden" data-screen="rejection">
+        <div class="reaction-media">
+          <video
+            id="rejectionVideo"
+            data-asset="me-sad-drinking"
+            src="images/me/sad-drinking.mp4"
+            controls
+            playsinline
+            loop
+          ></video>
+          <span>[me-sad-drinking]</span>
+        </div>
+        <div class="question-panel">
+          <h2>Looks like I have to go back to drinking with my straight friends lol</h2>
+          <div class="choice-row">
+            <button class="primary-action" data-go="ask">Undo my crimes</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stage is-hidden" data-screen="map">
+        <div class="quest-map">
+          <button class="element-zone earth" data-day="saturday">
+            <span>Earth Kingdom</span>
+            <strong>Saturday</strong>
+            <small>July 4</small>
+          </button>
+          <button class="element-zone water" data-day="sunday">
+            <span>Water Tribe</span>
+            <strong>Sunday</strong>
+            <small>July 5</small>
+          </button>
+          <button class="element-zone fire" data-decoy="fire">
+            <span>Fire Nation</span>
+            <strong>Bad Choices</strong>
+            <small>do not</small>
+          </button>
+          <button class="element-zone air" data-decoy="air">
+            <span>Air Temple</span>
+            <strong>Next season ..</strong>
+            <small></small>
+          </button>
+        </div>
+
+        <div class="question-panel">
+          <h2>Pick a day</h2>
+          <p class="panel-copy" id="mapHint">It's all Madrid time.</p>
+        </div>
+      </section>
+
+      <section class="stage is-hidden" data-screen="time">
+        <div class="question-panel wide">
+          <p class="eyebrow" id="dayLabel">Madrid time</p>
+          <h2>Choose the time</h2>
+          <div class="time-grid" id="timeGrid"></div>
+          <button class="quiet-action" data-go="map">Choose another day</button>
+        </div>
+
+        <div class="reaction-card" id="reactionCard">
+          <p class="reaction-caption" id="judgingCaption">Me JUDGING YUR CHOICE</p>
+          <div class="reaction-media compact" id="judgingMedia">
+            <img id="judgingImage" data-asset="me-judging-1" src="images/me/judging-1 (1).jpeg" alt="Judging reaction">
+            <span id="judgingFallback">[me-judging-1]</span>
+          </div>
+          <p id="reactionText"></p>
+        </div>
+      </section>
+
+      <section class="stage is-hidden" data-screen="final">
+        <div class="reaction-media">
+          <img data-asset="me-cheers" src="images/me/cheers.jpeg" alt="Cheers reaction">
+          <span>[me-cheers]</span>
+        </div>
+        <div class="question-panel">
+          <h2 id="finalTitle">Cheers, I'll see you then</h2>
+          <p class="panel-copy" id="finalDetails"></p>
+          <div class="choice-row">
+            <button class="primary-action" id="submitScroll">Submit</button>
+            <button class="quiet-action" data-go="time">Change time</button>
+          </div>
+          <div class="calendar-actions is-hidden" id="calendarActions">
+            <a class="calendar-link" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
+            <button class="quiet-action" id="downloadCalendar" type="button">Download calendar file</button>
+          </div>
+          <p class="submit-status" id="submitStatus" role="status"></p>
+        </div>
+      </section>
+    </main>
+
+    <template id="sparkTemplate">
+      <span class="spark"></span>
+    </template>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
