@@ -19,6 +19,8 @@
   </head>
   <body>
     <main class="app-shell">
+      <button class="back-action is-hidden" id="backButton" type="button">Back</button>
+
       <section class="stage intro-stage" data-screen="intro">
         <div class="intro-video-wrap">
           <video
@@ -134,7 +136,6 @@
           </div>
           <div class="calendar-actions is-hidden" id="calendarActions">
             <a class="calendar-link" id="googleCalendarLink" href="#" target="_blank" rel="noopener">Add to Google Calendar</a>
-            <button class="quiet-action" id="downloadCalendar" type="button">Download calendar file</button>
           </div>
           <p class="submit-status" id="submitStatus" role="status"></p>
         </div>

@@ -61,8 +61,9 @@
   const finalDetails = document.getElementById("finalDetails");
   const calendarActions = document.getElementById("calendarActions");
   const googleCalendarLink = document.getElementById("googleCalendarLink");
-  const downloadCalendar = document.getElementById("downloadCalendar");
   const submitStatus = document.getElementById("submitStatus");
+  const submitScroll = document.getElementById("submitScroll");
+  const backButton = document.getElementById("backButton");
   const mapHint = document.getElementById("mapHint");
   const judgingCaption = document.getElementById("judgingCaption");
   const judgingMedia = document.getElementById("judgingMedia");
@@ -76,8 +77,20 @@
   const introQuestion = "My Favorite Guapo, will you watch Avatar season 2 with me this weekend?";
   let introTypingStarted = false;
   let introPlayAttempting = false;
+  let currentScreen = null;
+  const screenHistory = [];
 
-  function showScreen(name) {
+  function updateBackButton() {
+    backButton.classList.toggle("is-hidden", screenHistory.length === 0);
+  }
+
+  function showScreen(name, options = {}) {
+    const { record = true } = options;
+    if (record && currentScreen && currentScreen !== name) {
+      screenHistory.push(currentScreen);
+    }
+    currentScreen = name;
+
     screens.forEach((screen, screenName) => {
       screen.classList.toggle("is-hidden", screenName !== name);
     });
@@ -87,6 +100,7 @@
       rejectionVideo.currentTime = 0;
       rejectionVideo.play().catch(() => {});
     }
+    updateBackButton();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -132,7 +146,7 @@
   function calendarDescription() {
     const day = days[state.dayKey];
     const lines = [
-      "Avatar season 2 watch time.",
+      "Avatar season 2.",
       `${day.label}, ${formatHour(state.hour)} Madrid / ${formatShanghai(shanghaiHour(state.hour))} Shanghai`,
     ];
 
@@ -164,37 +178,6 @@
     }
 
     googleCalendarLink.href = `https://calendar.google.com/calendar/render?${params.toString()}`;
-  }
-
-  function downloadCalendarFile() {
-    if (state.hour == null || !state.dayKey) return;
-
-    const { start, end } = selectedCalendarWindow();
-    const ics = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//Avatar Season 2 Quest//EN",
-      "BEGIN:VEVENT",
-      `UID:avatar-season-2-${Date.now()}@avatar-quest`,
-      `DTSTAMP:${formatCalendarDate(new Date())}`,
-      `DTSTART:${formatCalendarDate(start)}`,
-      `DTEND:${formatCalendarDate(end)}`,
-      `SUMMARY:${calendarTitle()}`,
-      `DESCRIPTION:${calendarDescription().replace(/\n/g, "\\n")}`,
-      calendarEventLink ? `LOCATION:${calendarEventLink}` : "",
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].filter(Boolean).join("\r\n");
-
-    const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "avatar-season-2.ics";
-    document.body.append(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
   }
 
   function pickJudgingImage() {
@@ -306,6 +289,9 @@
     ].join(" / ");
     updateCalendarLinks();
     calendarActions.classList.add("is-hidden");
+    state.submitted = false;
+    submitScroll.disabled = false;
+    submitScroll.textContent = "Submit";
     submitStatus.textContent = "";
     setTimeout(() => showScreen("final"), 450);
   }
@@ -424,20 +410,24 @@
     }
   });
 
-  document.getElementById("submitScroll").addEventListener("click", async () => {
-    submitStatus.textContent = hasSubmissionEndpoint ? "Submitting..." : "";
-    try {
-      await sendSubmission("final_submission");
-      state.submitted = true;
-      submitStatus.textContent = hasSubmissionEndpoint ? "Submitted." : "";
-      updateCalendarLinks();
-      calendarActions.classList.remove("is-hidden");
-    } catch (error) {
-      submitStatus.textContent = "";
-    }
+  backButton.addEventListener("click", () => {
+    const previousScreen = screenHistory.pop();
+    if (!previousScreen) return;
+    showScreen(previousScreen, { record: false });
   });
 
-  downloadCalendar.addEventListener("click", downloadCalendarFile);
+  submitScroll.addEventListener("click", () => {
+    if (state.submitted) return;
+
+    state.submitted = true;
+    submitScroll.disabled = true;
+    submitScroll.textContent = "Submitted";
+    submitStatus.textContent = hasSubmissionEndpoint ? "Submitted." : "";
+    updateCalendarLinks();
+    calendarActions.classList.remove("is-hidden");
+
+    sendSubmission("final_submission").catch(() => {});
+  });
 
   introVideo.addEventListener("ended", typeIntroQuestion);
   introVideo.addEventListener("error", typeIntroQuestion);
@@ -463,7 +453,7 @@
   markMissingMedia();
   warmMediaCache();
   shuffleJudgingImage();
-  showScreen("intro");
+  showScreen("intro", { record: false });
   if (new URLSearchParams(window.location.search).get("skipIntro") === "1") {
     typeIntroQuestion();
   } else {
