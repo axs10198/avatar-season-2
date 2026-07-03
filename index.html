@@ -7,6 +7,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="images/me/judging-1%20(1).jpeg">
+    <link rel="preload" as="image" href="images/me/judging-1%20(2).jpeg">
+    <link rel="preload" as="image" href="images/me/cheers.jpeg">
+    <link rel="preload" as="video" href="images/me/sad-drinking.mp4">
+    <link rel="prefetch" as="image" href="images/avatar/earth-kingdom-bg.jpg">
+    <link rel="prefetch" as="image" href="images/avatar/water-tribe-bg.jpg">
+    <link rel="prefetch" as="image" href="images/avatar/fire-nation-bg.jpg">
+    <link rel="prefetch" as="image" href="images/avatar/air-temple-bg.jpg">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -52,6 +60,7 @@
             controls
             playsinline
             loop
+            preload="auto"
           ></video>
           <span>[me-sad-drinking]</span>
         </div>
@@ -104,7 +113,7 @@
         <div class="reaction-card" id="reactionCard">
           <p class="reaction-caption" id="judgingCaption">Me JUDGING YUR CHOICE</p>
           <div class="reaction-media compact" id="judgingMedia">
-            <img id="judgingImage" data-asset="me-judging-1" src="images/me/judging-1 (1).jpeg" alt="Judging reaction">
+            <img id="judgingImage" data-asset="me-judging-1" src="images/me/judging-1 (1).jpeg" alt="Judging reaction" loading="eager" decoding="async">
             <span id="judgingFallback">[me-judging-1]</span>
           </div>
           <p id="reactionText"></p>
@@ -113,7 +122,7 @@
 
       <section class="stage is-hidden" data-screen="final">
         <div class="reaction-media">
-          <img data-asset="me-cheers" src="images/me/cheers.jpeg" alt="Cheers reaction">
+          <img data-asset="me-cheers" src="images/me/cheers.jpeg" alt="Cheers reaction" loading="eager" decoding="async">
           <span>[me-cheers]</span>
         </div>
         <div class="question-panel">

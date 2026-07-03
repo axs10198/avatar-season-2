@@ -16,6 +16,16 @@
     "images/me/judging-1 (1).jpeg",
     "images/me/judging-1 (2).jpeg",
   ];
+  const preloadImages = [
+    ...judgingImages,
+    "images/me/cheers.jpeg",
+    "images/avatar/parchment-bg.jpg",
+    "images/avatar/map-bg.jpg",
+    "images/avatar/earth-kingdom-bg.jpg",
+    "images/avatar/water-tribe-bg.jpg",
+    "images/avatar/fire-nation-bg.jpg",
+    "images/avatar/air-temple-bg.jpg",
+  ];
 
   const days = {
     saturday: {
@@ -356,6 +366,19 @@
     });
   }
 
+  function warmMediaCache() {
+    preloadImages.forEach((src) => {
+      const image = new Image();
+      image.decoding = "async";
+      image.src = src;
+    });
+
+    if (rejectionVideo) {
+      rejectionVideo.preload = "auto";
+      rejectionVideo.load();
+    }
+  }
+
   document.addEventListener("click", (event) => {
     const goButton = event.target.closest("[data-go]");
     if (goButton) {
@@ -438,6 +461,7 @@
   });
 
   markMissingMedia();
+  warmMediaCache();
   shuffleJudgingImage();
   showScreen("intro");
   if (new URLSearchParams(window.location.search).get("skipIntro") === "1") {
