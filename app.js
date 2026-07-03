@@ -190,12 +190,14 @@
   }
 
   function setReactionImage(image, fallback, imageChoice) {
-    if (!image || !fallback) return;
+    if (!image) return;
 
     image.removeAttribute("data-missing");
     image.dataset.asset = imageChoice.label;
     image.src = imageChoice.nextImage;
-    fallback.textContent = `[${imageChoice.label}]`;
+    if (fallback) {
+      fallback.textContent = "";
+    }
   }
 
   function shuffleJudgingImage() {

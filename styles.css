@@ -391,19 +391,6 @@ button:active {
 
 .asset-fallback,
 .reaction-media span {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: rgba(46, 31, 18, 0.76);
-  font-weight: 900;
-  border: 2px dashed rgba(46, 31, 18, 0.35);
-  background: rgba(255, 244, 219, 0.35);
-}
-
-.map-art img:not([data-missing="true"]) + .asset-fallback,
-.reaction-media img:not([data-missing="true"]) + span,
-.reaction-media video:not([data-missing="true"]) + span {
   display: none;
 }
 
